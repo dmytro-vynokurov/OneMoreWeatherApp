@@ -1,7 +1,8 @@
 <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <TextView
             android:layout_width="wrap_content"
@@ -34,14 +35,224 @@
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/dayOfWeek"/>
 
+    <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date"
+            android:layout_marginTop="81dp"
+            android:layout_marginRight="40dp"
+            android:layout_toLeftOf="@+id/city"
+            android:id="@+id/tableRowCurrent">
+
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/currentImage"
+                android:minHeight="80dp"
+                android:minWidth="80dp"
+                android:background="#ffff171e"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="+13 C"
+                android:id="@+id/currentTemp"
+                android:textSize="60dp"/>
+    </TableRow>
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="+13 C"
-            android:id="@+id/currentTemp"
-            android:layout_marginTop="77dp"
-            android:layout_below="@+id/date"
-            android:layout_toLeftOf="@+id/city"
-            android:layout_marginRight="83dp"/>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="sunny"
+            android:id="@+id/currentDescription"
+            android:layout_below="@+id/tableRowCurrent"
+            android:layout_centerHorizontal="true"/>
+
+    <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/currentDescription"
+            android:id="@+id/tableRowForToday"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:visibility="visible"
+                android:id="@+id/morningLayout"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Morning"
+                    android:id="@+id/labelMorning"
+                    android:layout_gravity="center_horizontal"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/morningImage"
+                    android:background="#ff3bffe7"
+                    android:minHeight="20dp"
+                    android:minWidth="20dp"
+                    android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="+13 C"
+                    android:id="@+id/morningTemp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/dayLayout"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Day"
+                    android:id="@+id/labelDay"
+                    android:layout_gravity="center_horizontal"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dayImage"
+                    android:background="#fffffb18"
+                    android:minHeight="20dp"
+                    android:minWidth="20dp"
+                    android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="+13 C"
+                    android:id="@+id/dayTemp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:focusableInTouchMode="false"
+                android:id="@+id/eveningLayout"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Evening"
+                    android:id="@+id/labelEvening"
+                    android:visibility="visible"
+                    android:layout_gravity="center_horizontal"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eveningImage"
+                    android:background="#ff2320ff"
+                    android:minHeight="20dp"
+                    android:minWidth="20dp"
+                    android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="+13 C"
+                    android:id="@+id/eveningTemp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/nightLayout"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Night"
+                    android:id="@+id/labelNight"
+                    android:layout_gravity="center_horizontal"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nightImage"
+                    android:background="#ffff17f9"
+                    android:minHeight="20dp"
+                    android:minWidth="20dp"
+                    android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="+13 C"
+                    android:id="@+id/nightTemp"/>
+        </LinearLayout>
+
+    </TableRow>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="wind: "
+            android:id="@+id/currentWind"
+            android:layout_below="@+id/tableRowForToday"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="20dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="pressure: "
+            android:id="@+id/currentPressure"
+            android:layout_below="@+id/currentWind"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="humidity: "
+            android:id="@+id/currentHumidity"
+            android:layout_below="@+id/currentPressure"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"/>
+
+    <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adUnitId="MY_AD_UNIT_ID"
+            ads:adSize="BANNER"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
 </RelativeLayout>
