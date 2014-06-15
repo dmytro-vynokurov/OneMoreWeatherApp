@@ -84,7 +84,7 @@ public class RSSParser {
                         System.out.println("------NAME"+j+":"+name);
                         System.out.println("------TEXT"+j+":"+text);
                         System.out.println("------PARS"+j+":" + parameters);
-                        if (name.equals("title") && text.length()>17){
+                        if (name.equals("title") && text.length()>17 && dailyForecast.getCity()==null){
                             String cityName = text.substring(17,text.length());
                             System.out.println("------CITY"+j+":" + cityName);
                             //TODO: use CityStorage
@@ -100,8 +100,8 @@ public class RSSParser {
                             dailyForecast.setCurrentTemperature(
                                     Temperature.instanceCelsius(Integer.valueOf(parameters.get("temp"))));
                             dailyForecast.setCurrentDescription(parameters.get("text"));
-                            System.out.println("------TEMP"+j+":" + dailyForecast.getCurrentTemperature());
-                            System.out.println("------DESC"+j+":" + dailyForecast.getCurrentDescription());
+                            System.out.println("------TEMP" + j + ":" + dailyForecast.getCurrentTemperature());
+                            System.out.println("------DESC" + j + ":" + dailyForecast.getCurrentDescription());
                         }else if(name.equals("yweather:wind")){
                             dailyForecast.setWind(new Wind(
                                     Integer.valueOf(parameters.get("direction")),
@@ -109,16 +109,21 @@ public class RSSParser {
                             System.out.println("------WIND"+j+":" + dailyForecast.getWind());
                         }else if(name.equals("yweather:atmosphere")){
                             dailyForecast.setHumidity(Integer.valueOf(parameters.get("humidity")));
-                            dailyForecast.setPressure(
-                                    Util.millibarToMillimetersHg(Double.valueOf(parameters.get("pressure"))));
-                            System.out.println("------HUMI"+j+":" + dailyForecast.getHumidity());
-                            System.out.println("------PRES"+j+":" + dailyForecast.getPressure());
+                            dailyForecast.setPressure(Double.valueOf(parameters.get("pressure")));
+                            System.out.println("------HUMI" + j + ":" + dailyForecast.getHumidity());
+                            System.out.println("------PRES" + j + ":" + dailyForecast.getPressure());
                         }
                 }
                 event = parser.next();
                 j++;
             }
             ForecastStorage storage = ForecastStorage.getInstance();
+            List<DailyForecast> forecasts = storage.getDailyForecasts();
+            if(forecasts == null){
+                forecasts = new ArrayList<DailyForecast>();
+            }
+            forecasts.add(dailyForecast);
+            storage.setDailyForecasts(forecasts);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

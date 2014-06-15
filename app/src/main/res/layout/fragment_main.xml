@@ -36,13 +36,13 @@
             android:layout_alignBottom="@+id/dayOfWeek"/>
 
     <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/date"
             android:layout_marginTop="81dp"
-            android:layout_marginRight="40dp"
-            android:layout_toLeftOf="@+id/city"
-            android:id="@+id/tableRowCurrent">
+            android:id="@+id/tableRowCurrent"
+            android:layout_alignRight="@+id/city"
+            android:layout_alignEnd="@+id/city">
 
 
         <ImageView
@@ -51,7 +51,8 @@
                 android:id="@+id/currentImage"
                 android:minHeight="80dp"
                 android:minWidth="80dp"
-                android:background="#ffff171e"/>
+                android:background="#ffff171e"
+                android:layout_gravity="center_horizontal"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -59,7 +60,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="+13 C"
                 android:id="@+id/currentTemp"
-                android:textSize="60dp"/>
+                android:textSize="60dp"
+                android:layout_gravity="center_horizontal"/>
     </TableRow>
 
     <TextView
@@ -77,7 +79,8 @@
             android:layout_below="@+id/currentDescription"
             android:id="@+id/tableRowForToday"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
 
         <LinearLayout
                 android:orientation="vertical"

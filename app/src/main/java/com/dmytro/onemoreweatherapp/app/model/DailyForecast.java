@@ -14,7 +14,6 @@ public class DailyForecast {
     private Temperature currentTemperature;
     private WebImage currentImage;
     private String currentDescription;
-    private List<TodayForecast> todayForecasts;
     private Wind wind;
     private int pressure;
     private int humidity;
@@ -30,7 +29,6 @@ public class DailyForecast {
         this.currentTemperature = currentTemperature;
         this.currentImage = currentImage;
         this.currentDescription = currentDescription;
-        this.todayForecasts = todayForecasts;
         this.wind = wind;
         this.pressure = pressure;
         this.humidity = humidity;
@@ -74,14 +72,6 @@ public class DailyForecast {
 
     public void setCurrentDescription(String currentDescription) {
         this.currentDescription = currentDescription;
-    }
-
-    public List<TodayForecast> getTodayForecasts() {
-        return todayForecasts;
-    }
-
-    public void setTodayForecasts(List<TodayForecast> todayForecasts) {
-        this.todayForecasts = todayForecasts;
     }
 
     public Wind getWind() {

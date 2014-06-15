@@ -56,8 +56,16 @@ public class Temperature {
     @Override
     public String toString() {
         String scale;
-        if(currentScale == Scale.CELSIUS) scale = " C";
-        else scale = " F";
-        return getTemperature(currentScale)+scale;
+        String sign;
+        if(currentScale == Scale.CELSIUS){
+            scale = " C";
+            sign = getTemperatureCelsius()>0? "+":"";
+        }
+        else{
+            scale = " F";
+            sign = getTemperatureFahrenheit()>0? "+":"";
+        }
+
+        return sign+Math.round(getTemperature(currentScale))+scale;
     }
 }

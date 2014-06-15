@@ -7,9 +7,16 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
+import android.widget.TextView;
+import com.dmytro.onemoreweatherapp.app.model.DailyForecast;
+import com.dmytro.onemoreweatherapp.app.model.ForecastStorage;
 import com.dmytro.onemoreweatherapp.app.model.RSSParser;
-import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -141,6 +148,32 @@ public class MainActivity extends ActionBarActivity {
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice("7BD0CC159298FEEE10BBDCF2A26E9B7D").build();
             adView.loadAd(adRequest);
+
+
+            List<DailyForecast> forecasts = ForecastStorage.getInstance().getDailyForecasts();
+            if(forecasts!=null){
+                DailyForecast forecast = forecasts.get(0);
+
+
+                TextView city = (TextView)rootView.findViewById(R.id.city);
+                TextView date = (TextView)rootView.findViewById(R.id.date);
+                TextView dayOfWeek = (TextView)rootView.findViewById(R.id.dayOfWeek);
+                TextView temp = (TextView)rootView.findViewById(R.id.currentTemp);
+                TextView humidity = (TextView)rootView.findViewById(R.id.currentHumidity);
+                TextView pressure = (TextView)rootView.findViewById(R.id.currentPressure);
+                TextView wind = (TextView)rootView.findViewById(R.id.currentWind);
+                TextView description = (TextView)rootView.findViewById(R.id.currentDescription);
+
+                city.setText(forecast.getCity().toString());
+                date.setText(new SimpleDateFormat("MMM").format(forecast.getDate().getTime())+
+                        forecast.getDate().get(Calendar.DAY_OF_MONTH));
+                dayOfWeek.setText(new SimpleDateFormat("EEEE").format(forecast.getDate().getTime()));
+                temp.setText(forecast.getCurrentTemperature().toString());
+                humidity.setText("humidity: "+String.valueOf(forecast.getHumidity())+"%");
+                pressure.setText("pressure: "+String.valueOf(forecast.getPressure())+"mm hg");
+                wind.setText("wind: "+forecast.getWind().toString());
+                description.setText(forecast.getCurrentDescription());
+            }
 
             return rootView;
         }
