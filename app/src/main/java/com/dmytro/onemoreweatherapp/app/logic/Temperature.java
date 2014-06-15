@@ -6,6 +6,7 @@ package com.dmytro.onemoreweatherapp.app.logic;
  * Time: 4:08
  */
 public class Temperature {
+    public enum Scale{CELSIUS, FAHRENHEIT}
     private static final long serialVersionUID = 12341L;
 
     private double temperatureCelsius;
@@ -36,5 +37,10 @@ public class Temperature {
 
     public double getTemperatureFahrenheit(){
         return celsiusAsFahrenheit(temperatureCelsius);
+    }
+
+    public double getTemperature(Scale scale){
+        if(scale==Scale.CELSIUS) return getTemperatureCelsius();
+        else return getTemperatureFahrenheit();
     }
 }
