@@ -1,4 +1,4 @@
-package com.dmytro.onemoreweatherapp.app.logic;
+package com.dmytro.onemoreweatherapp.app.model;
 
 import java.io.Serializable;
 
