@@ -7,6 +7,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
+import com.google.android.gms.ads.*;
 
 import java.util.Locale;
 
@@ -134,6 +135,14 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+
+            // Look up the AdView as a resource and load a request.
+            AdView adView = (AdView)rootView.findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("7BD0CC159298FEEE10BBDCF2A26E9B7D").build();
+            adView.loadAd(adRequest);
+
             return rootView;
         }
     }
