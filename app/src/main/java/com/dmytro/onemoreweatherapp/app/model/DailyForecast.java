@@ -6,9 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * User: Dmytro Vynokurov
- * Date: 15.06.14
- * Time: 4:59
+ * Keeps data about forecast for current day
  */
 public class DailyForecast {
     private Calendar date;
@@ -16,20 +14,23 @@ public class DailyForecast {
     private Temperature currentTemperature;
     private WebImage currentImage;
     private String currentDescription;
-    private List<DailyForecast> dailyForecasts;
+    private List<TodayForecast> todayForecasts;
     private Wind wind;
     private int pressure;
     private int humidity;
 
+    public DailyForecast() {
+    }
+
     public DailyForecast(Calendar date, City city, Temperature currentTemperature,
-                         WebImage currentImage, String currentDescription, List<DailyForecast> dailyForecasts,
+                         WebImage currentImage, String currentDescription, List<TodayForecast> todayForecasts,
                          Wind wind, int pressure, int humidity) {
         this.date = date;
         this.city = city;
         this.currentTemperature = currentTemperature;
         this.currentImage = currentImage;
         this.currentDescription = currentDescription;
-        this.dailyForecasts = dailyForecasts;
+        this.todayForecasts = todayForecasts;
         this.wind = wind;
         this.pressure = pressure;
         this.humidity = humidity;
@@ -75,12 +76,12 @@ public class DailyForecast {
         this.currentDescription = currentDescription;
     }
 
-    public List<DailyForecast> getDailyForecasts() {
-        return dailyForecasts;
+    public List<TodayForecast> getTodayForecasts() {
+        return todayForecasts;
     }
 
-    public void setDailyForecasts(List<DailyForecast> dailyForecasts) {
-        this.dailyForecasts = dailyForecasts;
+    public void setTodayForecasts(List<TodayForecast> todayForecasts) {
+        this.todayForecasts = todayForecasts;
     }
 
     public Wind getWind() {

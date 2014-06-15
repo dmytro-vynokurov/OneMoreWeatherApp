@@ -7,6 +7,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
+import com.dmytro.onemoreweatherapp.app.model.RSSParser;
 import com.google.android.gms.ads.*;
 
 import java.util.Locale;
@@ -43,6 +44,8 @@ public class MainActivity extends ActionBarActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        RSSParser.fetchAndStoreRSS("http://weather.yahooapis.com/forecastrss?w=2502265&u=c", RSSParser.RSSType.FORECAST);
 
     }
 

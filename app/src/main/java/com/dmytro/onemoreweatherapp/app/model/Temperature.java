@@ -9,6 +9,7 @@ public class Temperature {
     public enum Scale{CELSIUS, FAHRENHEIT}
     private static final long serialVersionUID = 12341L;
 
+    private Scale currentScale;
     private double temperatureCelsius;
 
     private Temperature(double temperatureCelsius){
@@ -16,11 +17,15 @@ public class Temperature {
     }
 
     public static Temperature instanceCelsius(double temperature){
-        return new Temperature(temperature);
+        Temperature result = new Temperature(temperature);
+        result.setCurrentScale(Scale.CELSIUS);
+        return result;
     }
 
     public static Temperature instanceFahrenheit(double temperature){
-        return new Temperature(fahrenheitAsCelsius(temperature));
+        Temperature result = new Temperature(fahrenheitAsCelsius(temperature));
+        result.setCurrentScale(Scale.FAHRENHEIT);
+        return result;
     }
 
     private static double celsiusAsFahrenheit(double temperatureCelsius){
@@ -42,5 +47,17 @@ public class Temperature {
     public double getTemperature(Scale scale){
         if(scale==Scale.CELSIUS) return getTemperatureCelsius();
         else return getTemperatureFahrenheit();
+    }
+
+    private void setCurrentScale(Scale scale){
+        this.currentScale = scale;
+    }
+
+    @Override
+    public String toString() {
+        String scale;
+        if(currentScale == Scale.CELSIUS) scale = " C";
+        else scale = " F";
+        return getTemperature(currentScale)+scale;
     }
 }

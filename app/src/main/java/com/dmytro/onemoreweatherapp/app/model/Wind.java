@@ -14,6 +14,10 @@ public class Wind {
         this.speed = speed;
     }
 
+    public Wind(int direction,double speed){
+        this(Util.windDegreesToDirection(direction),speed);
+    }
+
     public String getDirection() {
         return direction;
     }
@@ -28,5 +32,10 @@ public class Wind {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    @Override
+    public String toString() {
+        return "Wind: " + direction + ", " +speed+"km/h";
     }
 }
