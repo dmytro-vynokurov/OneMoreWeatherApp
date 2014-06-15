@@ -11,7 +11,6 @@ import java.util.List;
 public class ForecastStorage implements Serializable{
     private static final long serialVersionUID = 123451;
 
-    private TodayForecast todayForecast;
     private List<DailyForecast> dailyForecasts;
 
     private static ForecastStorage instance = null;
@@ -23,15 +22,11 @@ public class ForecastStorage implements Serializable{
 
     private ForecastStorage() {}
 
-    public TodayForecast getTodayForecast() {
-        return todayForecast;
-    }
-
-    public void setTodayForecast(TodayForecast todayForecast) {
-        this.todayForecast = todayForecast;
-    }
-
     public List<DailyForecast> getDailyForecasts() {
         return dailyForecasts;
+    }
+
+    public void setDailyForecasts(List<DailyForecast> dailyForecasts) {
+        this.dailyForecasts = dailyForecasts;
     }
 }

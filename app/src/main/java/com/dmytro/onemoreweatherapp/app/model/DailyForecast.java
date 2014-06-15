@@ -100,6 +100,14 @@ public class DailyForecast {
         this.pressure = pressure;
     }
 
+    public void setPressure(double pressureInMillibars){
+        this.pressure = millibarToMillimetersHg(pressureInMillibars);
+    }
+
+    private static int millibarToMillimetersHg(double mBars){
+        return (int) Math.round(mBars/13.3322387)*10;
+    }
+
     public int getHumidity() {
         return humidity;
     }
