@@ -14,7 +14,14 @@ public class ForecastStorage implements Serializable{
     private TodayForecast todayForecast;
     private List<DailyForecast> dailyForecasts;
 
-    public ForecastStorage() {}
+    private static ForecastStorage instance = null;
+
+    public static synchronized ForecastStorage getInstance(){
+        if (instance==null) instance = new ForecastStorage();
+        return instance;
+    }
+
+    private ForecastStorage() {}
 
     public TodayForecast getTodayForecast() {
         return todayForecast;
@@ -26,9 +33,5 @@ public class ForecastStorage implements Serializable{
 
     public List<DailyForecast> getDailyForecasts() {
         return dailyForecasts;
-    }
-
-    public void setDailyForecasts(List<DailyForecast> dailyForecasts) {
-        this.dailyForecasts = dailyForecasts;
     }
 }
