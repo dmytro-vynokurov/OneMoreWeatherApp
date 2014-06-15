@@ -1,4 +1,4 @@
-package com.dmytro.onemoreweatherapp.app;
+package com.dmytro.onemoreweatherapp.app.logic;
 
 /**
  * User: Dmytro Vynokurov
@@ -6,6 +6,8 @@ package com.dmytro.onemoreweatherapp.app;
  * Time: 4:08
  */
 public class Temperature {
+    private static final long serialVersionUID = 12341L;
+
     private double temperatureCelsius;
 
     private Temperature(double temperatureCelsius){
