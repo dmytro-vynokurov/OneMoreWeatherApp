@@ -12,6 +12,7 @@ public class City implements Serializable{
 
     private String name;
     private long id;
+    private int viewIndex;
 
     public City(String name, long id) {
         this.name = name;
@@ -32,6 +33,30 @@ public class City implements Serializable{
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getViewIndex() {
+        return viewIndex;
+    }
+
+    public void setViewIndex(int viewIndex) {
+        this.viewIndex = viewIndex;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || ! (o instanceof City)) return false;
+
+        City city = (City) o;
+
+        return id == city.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 
     @Override

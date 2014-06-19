@@ -1,9 +1,10 @@
 package com.dmytro.onemoreweatherapp.app.yahoo.api;
 
+import com.dmytro.onemoreweatherapp.app.model.City;
 import com.dmytro.onemoreweatherapp.app.model.Forecast;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: Dmytro Vynokurov
@@ -13,8 +14,6 @@ import java.util.List;
 public class Storage implements Serializable{
     private static final long serialVersionUID = 123451;
 
-    private List<Forecast> forecasts;
-
     private static Storage instance = null;
 
     public static synchronized Storage getInstance(){
@@ -22,13 +21,25 @@ public class Storage implements Serializable{
         return instance;
     }
 
-    private Storage() {}
+    private Map<City,Forecast> forecasts;
 
-    public List<Forecast> getForecasts() {
+    private Storage() {
+        forecasts = new HashMap<City, Forecast>();
+    }
+
+    public Map<City,Forecast> getForecasts() {
         return forecasts;
     }
 
-    public void setForecasts(List<Forecast> forecasts) {
+    public void setForecasts(Map<City,Forecast> forecasts) {
         this.forecasts = forecasts;
+    }
+
+    public List<Forecast> getForecastValues(){
+        return new ArrayList<Forecast>(forecasts.values());
+    }
+
+    public Set<City> getCities(){
+        return forecasts.keySet();
     }
 }

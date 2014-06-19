@@ -18,8 +18,14 @@ public class YahooApi {
 
     public static void updateForecastForCity(City city){
         String apiLink = getForecastLink(city.getId());
-        RSSFetcher fetcher = new RSSFetcher(new ForecastParser());
+        RSSFetcher fetcher = new RSSFetcher(new ForecastParser(city));
         fetcher.fetchAndStoreRSS(apiLink);
+    }
+
+    public static void updateAllForecasts(){
+        for(City city: Storage.getInstance().getCities()){
+            updateForecastForCity(city);
+        }
     }
 
 

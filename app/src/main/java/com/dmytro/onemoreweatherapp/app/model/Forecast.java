@@ -2,12 +2,15 @@ package com.dmytro.onemoreweatherapp.app.model;
 
 import com.google.android.gms.common.images.WebImage;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Keeps data about forecast for current day
  */
-public class Forecast {
+public class Forecast implements Serializable {
+    private static final long serialVersionUID = 12341L;
+
     private Calendar date;
     private City city;
     private Temperature currentTemperature;

@@ -17,6 +17,13 @@ import java.util.*;
  * Time: 22:10
  */
 public class ForecastParser implements RSSParser {
+
+    private City city;
+
+    public ForecastParser(City city){
+        this.city = city;
+    }
+
     @Override
     public void parseAndStrore(XmlPullParser parser) {
         int event;
@@ -47,11 +54,13 @@ public class ForecastParser implements RSSParser {
                         System.out.println("------TEXT"+j+":"+text);
                         System.out.println("------PARS"+j+":" + parameters);
                         if (name.equals("title") && text.length()>17 && forecast.getCity()==null){
-                            String cityName = text.substring(17,text.length());
-                            System.out.println("------CITY"+j+":" + cityName);
-                            //TODO: use CityStorage
-                            forecast.setCity(new City(cityName, 1));
-                        }else if(name.equals("lastBuildDate")){
+//                            String cityName = text.substring(17,text.length());
+//                            System.out.println("------CITY"+j+":" + cityName);
+//                            //TODO: use CityStorage
+//                            forecast.setCity(new City(cityName, 1));
+                            forecast.setCity(city);
+                        }else
+                        if(name.equals("lastBuildDate")){
                             DateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm a zzz");
                             Date date = sdf.parse(text);
                             Calendar calendar = new GregorianCalendar();
@@ -80,11 +89,8 @@ public class ForecastParser implements RSSParser {
                 j++;
             }
             Storage storage = Storage.getInstance();
-            List<Forecast> forecasts = storage.getForecasts();
-            if(forecasts == null){
-                forecasts = new ArrayList<Forecast>();
-            }
-            forecasts.add(forecast);
+            Map<City,Forecast> forecasts = storage.getForecasts();
+            forecasts.put(forecast.getCity(),forecast);
             storage.setForecasts(forecasts);
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
 import android.widget.TextView;
-import com.dmytro.onemoreweatherapp.app.model.City;
 import com.dmytro.onemoreweatherapp.app.model.Forecast;
 import com.dmytro.onemoreweatherapp.app.yahoo.api.Storage;
 import com.dmytro.onemoreweatherapp.app.yahoo.api.YahooApi;
@@ -147,7 +146,7 @@ public class MainActivity extends ActionBarActivity {
                     .addTestDevice("7BD0CC159298FEEE10BBDCF2A26E9B7D").build();
             adView.loadAd(adRequest);
 
-            YahooApi.updateForecastForCity(new City("Kyiv",924938));
+            YahooApi.updateAllForecasts();
 
             updateForecastOnView(rootView);
 
@@ -156,8 +155,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private static void updateForecastOnView(View rootView) {
-        List<Forecast> forecasts = Storage.getInstance().getForecasts();
-        if(forecasts!=null){
+        List<Forecast> forecasts = Storage.getInstance().getForecastValues();
+        if(!forecasts.isEmpty()){
             Forecast forecast = forecasts.get(0);
 
 
