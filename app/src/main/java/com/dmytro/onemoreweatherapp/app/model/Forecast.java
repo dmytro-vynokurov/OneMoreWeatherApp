@@ -3,12 +3,11 @@ package com.dmytro.onemoreweatherapp.app.model;
 import com.google.android.gms.common.images.WebImage;
 
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Keeps data about forecast for current day
  */
-public class DailyForecast {
+public class Forecast {
     private Calendar date;
     private City city;
     private Temperature currentTemperature;
@@ -17,13 +16,16 @@ public class DailyForecast {
     private Wind wind;
     private int pressure;
     private int humidity;
+    private Calendar timestamp;
 
-    public DailyForecast() {
+    public Forecast() {
+        timestamp = Calendar.getInstance();
     }
 
-    public DailyForecast(Calendar date, City city, Temperature currentTemperature,
-                         WebImage currentImage, String currentDescription, List<TodayForecast> todayForecasts,
-                         Wind wind, int pressure, int humidity) {
+    public Forecast(Calendar date, City city, Temperature currentTemperature,
+                    WebImage currentImage, String currentDescription,
+                    Wind wind, int pressure, int humidity) {
+        this();
         this.date = date;
         this.city = city;
         this.currentTemperature = currentTemperature;
@@ -104,5 +106,9 @@ public class DailyForecast {
 
     public void setHumidity(int humidity) {
         this.humidity = humidity;
+    }
+
+    public Calendar getTimestamp() {
+        return timestamp;
     }
 }

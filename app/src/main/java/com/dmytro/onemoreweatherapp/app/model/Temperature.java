@@ -16,13 +16,13 @@ public class Temperature {
         this.temperatureCelsius = temperatureCelsius;
     }
 
-    public static Temperature instanceCelsius(double temperature){
+    public static Temperature inCelsius(double temperature){
         Temperature result = new Temperature(temperature);
         result.setCurrentScale(Scale.CELSIUS);
         return result;
     }
 
-    public static Temperature instanceFahrenheit(double temperature){
+    public static Temperature inFahrenheit(double temperature){
         Temperature result = new Temperature(fahrenheitAsCelsius(temperature));
         result.setCurrentScale(Scale.FAHRENHEIT);
         return result;
