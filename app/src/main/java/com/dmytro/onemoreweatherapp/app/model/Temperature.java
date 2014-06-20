@@ -1,5 +1,7 @@
 package com.dmytro.onemoreweatherapp.app.model;
 
+import com.dmytro.onemoreweatherapp.app.yahoo.api.Storage;
+
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,6 @@ public class Temperature implements Serializable {
     public enum Scale{CELSIUS, FAHRENHEIT}
     private static final long serialVersionUID = 12341L;
 
-    private Scale currentScale;
     private double temperatureCelsius;
 
     private Temperature(double temperatureCelsius){
@@ -19,15 +20,11 @@ public class Temperature implements Serializable {
     }
 
     public static Temperature inCelsius(double temperature){
-        Temperature result = new Temperature(temperature);
-        result.setCurrentScale(Scale.CELSIUS);
-        return result;
+        return new Temperature(temperature);
     }
 
     public static Temperature inFahrenheit(double temperature){
-        Temperature result = new Temperature(fahrenheitAsCelsius(temperature));
-        result.setCurrentScale(Scale.FAHRENHEIT);
-        return result;
+        return new Temperature(fahrenheitAsCelsius(temperature));
     }
 
     private static double celsiusAsFahrenheit(double temperatureCelsius){
@@ -51,15 +48,11 @@ public class Temperature implements Serializable {
         else return getTemperatureFahrenheit();
     }
 
-    private void setCurrentScale(Scale scale){
-        this.currentScale = scale;
-    }
-
     @Override
     public String toString() {
         String scale;
         String sign;
-        if(currentScale == Scale.CELSIUS){
+        if(Storage.getInstance().getTemperatureScale() == Scale.CELSIUS){
             scale = " C";
             sign = getTemperatureCelsius()>0? "+":"";
         }
@@ -68,6 +61,6 @@ public class Temperature implements Serializable {
             sign = getTemperatureFahrenheit()>0? "+":"";
         }
 
-        return sign+Math.round(getTemperature(currentScale))+scale;
+        return sign+Math.round(getTemperature(Storage.getInstance().getTemperatureScale()))+scale;
     }
 }

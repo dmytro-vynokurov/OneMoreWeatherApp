@@ -3,6 +3,7 @@ package com.dmytro.onemoreweatherapp.app.yahoo.api;
 import android.content.Context;
 import com.dmytro.onemoreweatherapp.app.model.City;
 import com.dmytro.onemoreweatherapp.app.model.Forecast;
+import com.dmytro.onemoreweatherapp.app.model.Temperature;
 
 import java.io.*;
 import java.util.*;
@@ -26,6 +27,9 @@ public class Storage implements Serializable{
     private Map<City,Forecast> forecasts;
     private boolean fetchSuccessful = true;
     private Calendar timestamp;
+    private City favouriteCity;
+    private Temperature.Scale temperatureScale = Temperature.Scale.CELSIUS;
+
 
     private Storage() {
         Comparator<City> comparator = new CityViewComparator();
@@ -70,6 +74,23 @@ public class Storage implements Serializable{
 
     public void setTimestamp(Calendar timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public City getFavouriteCity() {
+        if(favouriteCity!=null)return favouriteCity;
+        else return getCitiesList().get(0);
+    }
+
+    public void setFavouriteCity(City favouriteCity) {
+        this.favouriteCity = favouriteCity;
+    }
+
+    public Temperature.Scale getTemperatureScale() {
+        return temperatureScale;
+    }
+
+    public void setTemperatureScale(Temperature.Scale temperatureScale) {
+        this.temperatureScale = temperatureScale;
     }
 
     public boolean isDataObsolete(){

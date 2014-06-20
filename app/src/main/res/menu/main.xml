@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.dmytro.onemoreweatherapp.app.MainActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    tools:context="com.dmytro.onemoreweatherapp.app.activities.MainActivity" >
+    <item android:id="@+id/app_settings"
+        android:title="@string/app_settings"
         android:orderInCategory="100"
         app:showAsAction="never" />
 </menu>

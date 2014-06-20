@@ -50,14 +50,7 @@ public class ForecastParser implements RSSParser {
                         text = parser.getText();
                         break;
                     case XmlPullParser.END_TAG:
-//                        System.out.println("------NAME"+j+":"+name);
-//                        System.out.println("------TEXT"+j+":"+text);
-//                        System.out.println("------PARS"+j+":" + parameters);
                         if (name.equals("title") && text.length()>17 && forecast.getCity()==null){
-//                            String cityName = text.substring(17,text.length());
-//                            System.out.println("------CITY"+j+":" + cityName);
-//                            //TODO: use CityStorage
-//                            forecast.setCity(new City(cityName, 1));
                             forecast.setCity(city);
                         }else
                         if(name.equals("lastBuildDate")){
@@ -65,24 +58,18 @@ public class ForecastParser implements RSSParser {
                             Date date = sdf.parse(text);
                             Calendar calendar = new GregorianCalendar();
                             calendar.setTime(date);
-//                            System.out.println("------TIME"+j+":" + calendar);
                             forecast.setDate(calendar);
                         }else if(name.equals("yweather:condition")){
                             forecast.setCurrentTemperature(
                                     Temperature.inCelsius(Integer.valueOf(parameters.get("temp"))));
                             forecast.setCurrentDescription(parameters.get("text"));
-//                            System.out.println("------TEMP" + j + ":" + forecast.getCurrentTemperature());
-//                            System.out.println("------DESC" + j + ":" + forecast.getCurrentDescription());
                         }else if(name.equals("yweather:wind")){
                             forecast.setWind(new Wind(
                                     Integer.valueOf(parameters.get("direction")),
                                     Double.valueOf(parameters.get("speed"))));
-//                            System.out.println("------WIND"+j+":" + forecast.getWind());
                         }else if(name.equals("yweather:atmosphere")){
                             forecast.setHumidity(Integer.valueOf(parameters.get("humidity")));
                             forecast.setPressure(Double.valueOf(parameters.get("pressure")));
-//                            System.out.println("------HUMI" + j + ":" + forecast.getHumidity());
-//                            System.out.println("------PRES" + j + ":" + forecast.getPressure());
                         }
                 }
                 event = parser.next();

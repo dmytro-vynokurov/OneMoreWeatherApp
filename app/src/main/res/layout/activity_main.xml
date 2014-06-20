@@ -3,7 +3,7 @@
     android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dmytro.onemoreweatherapp.app.MainActivity"
+    tools:context="com.dmytro.onemoreweatherapp.app.activities.MainActivity"
     android:background="@drawable/back">
 
 

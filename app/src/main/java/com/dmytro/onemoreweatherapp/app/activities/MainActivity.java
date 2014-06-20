@@ -1,14 +1,16 @@
-package com.dmytro.onemoreweatherapp.app;
+package com.dmytro.onemoreweatherapp.app.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
 import android.widget.TextView;
+import com.dmytro.onemoreweatherapp.app.R;
 import com.dmytro.onemoreweatherapp.app.model.City;
 import com.dmytro.onemoreweatherapp.app.model.Forecast;
 import com.dmytro.onemoreweatherapp.app.yahoo.api.Storage;
@@ -18,6 +20,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +78,12 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        System.out.println("onOptionsItemSelected id="+id);
+        if(id==R.id.app_settings){
+            Intent i = new Intent(getApplicationContext(),SettingsActivity.class);
+            startActivity(i);
+        }
+        return id == R.id.app_settings || super.onOptionsItemSelected(item);
     }
 
     
@@ -116,20 +124,37 @@ public class MainActivity extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        private int currentFragmentId;
-        private Activity activity;
+        private static class FragmentDataKeeper{
+            private int currentFragmentId;
+            private Activity activity;
+
+            private FragmentDataKeeper(int currentFragmentId, Activity activity) {
+                this.currentFragmentId = currentFragmentId;
+                this.activity = activity;
+            }
+
+            public int getCurrentFragmentId() {
+                return currentFragmentId;
+            }
+
+            public Activity getActivity() {
+                return activity;
+            }
+        }
+
+        private static Map<PlaceholderFragment,FragmentDataKeeper> dataKeeperMap = new HashMap<PlaceholderFragment, FragmentDataKeeper>();
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
         public static PlaceholderFragment newInstance(int sectionNumber, Activity activity) {
-            return new PlaceholderFragment(sectionNumber,activity);
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            dataKeeperMap.put(fragment,new FragmentDataKeeper(sectionNumber,activity));
+            return fragment;
         }
 
-        public PlaceholderFragment(int currentFragmentId,Activity activity) {
-            this.currentFragmentId = currentFragmentId;
-            this.activity=activity;
+        public PlaceholderFragment() {
         }
 
         @Override
@@ -144,7 +169,7 @@ public class MainActivity extends ActionBarActivity {
                     .addTestDevice("7BD0CC159298FEEE10BBDCF2A26E9B7D").build();
             adView.loadAd(adRequest);
 
-            YahooApi.updateAllForecasts(activity);
+            YahooApi.updateAllForecasts(dataKeeperMap.get(this).getActivity());
             updateForecastOnView(rootView);
 
             return rootView;
@@ -152,8 +177,8 @@ public class MainActivity extends ActionBarActivity {
 
         private void updateForecastOnView(View rootView) {
             List<Forecast> forecasts = Storage.getInstance().getForecastValues();
-            if(!forecasts.isEmpty() && forecasts.get(currentFragmentId)!=null){
-                Forecast forecast = forecasts.get(currentFragmentId);
+            if(!forecasts.isEmpty() && forecasts.get(dataKeeperMap.get(this).getCurrentFragmentId())!=null){
+                Forecast forecast = forecasts.get(dataKeeperMap.get(this).getCurrentFragmentId());
 
 
                 TextView city = (TextView)rootView.findViewById(R.id.city);
