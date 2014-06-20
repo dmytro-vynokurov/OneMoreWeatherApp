@@ -1,11 +1,13 @@
 package com.dmytro.onemoreweatherapp.app.model;
 
+import java.io.Serializable;
+
 /**
  * User: Dmytro Vynokurov
  * Date: 15.06.14
  * Time: 5:07
  */
-public class Wind {
+public class Wind implements Serializable {
     private String direction;
     private double speed;
 
@@ -55,6 +57,6 @@ public class Wind {
 
     @Override
     public String toString() {
-        return "Wind: " + direction + ", " +speed+"km/h";
+        return "wind: " + direction + ", " +speed+"km/h";
     }
 }

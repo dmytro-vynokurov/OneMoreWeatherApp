@@ -19,16 +19,12 @@ public class Forecast implements Serializable {
     private Wind wind;
     private int pressure;
     private int humidity;
-    private Calendar timestamp;
 
-    public Forecast() {
-        timestamp = Calendar.getInstance();
-    }
+    public Forecast() {}
 
     public Forecast(Calendar date, City city, Temperature currentTemperature,
                     WebImage currentImage, String currentDescription,
                     Wind wind, int pressure, int humidity) {
-        this();
         this.date = date;
         this.city = city;
         this.currentTemperature = currentTemperature;
@@ -111,7 +107,17 @@ public class Forecast implements Serializable {
         this.humidity = humidity;
     }
 
-    public Calendar getTimestamp() {
-        return timestamp;
+    @Override
+    public String toString() {
+        return "Forecast{" +
+                "date=" + date +
+                ", city=" + city +
+                ", currentTemperature=" + currentTemperature +
+                ", currentImage=" + currentImage +
+                ", currentDescription='" + currentDescription + '\'' +
+                ", wind=" + wind +
+                ", pressure=" + pressure +
+                ", humidity=" + humidity +
+                '}';
     }
 }

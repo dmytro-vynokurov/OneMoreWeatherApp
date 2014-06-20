@@ -1,5 +1,6 @@
 package com.dmytro.onemoreweatherapp.app.yahoo.api;
 
+import android.content.Context;
 import com.dmytro.onemoreweatherapp.app.model.City;
 import com.dmytro.onemoreweatherapp.app.yahoo.api.parsing.ForecastParser;
 import com.dmytro.onemoreweatherapp.app.yahoo.api.parsing.RSSFetcher;
@@ -16,16 +17,20 @@ public class YahooApi {
         return "http://weather.yahooapis.com/forecastrss?w="+cityWoeid+"&u=c";
     }
 
-    public static void updateForecastForCity(City city){
+    private static void updateForecastForCity(City city){
         String apiLink = getForecastLink(city.getId());
         RSSFetcher fetcher = new RSSFetcher(new ForecastParser(city));
         fetcher.fetchAndStoreRSS(apiLink);
     }
 
-    public static void updateAllForecasts(){
-        for(City city: Storage.getInstance().getCities()){
+    public static void updateAllForecasts(Context context){
+        Storage storage = Storage.getInstance();
+        for(City city: storage.getCities()){
             updateForecastForCity(city);
+            if(!storage.isFetchSuccessful())break;
         }
+        if(storage.isFetchSuccessful()) storage.persist(context);
+        else storage.load(context);
     }
 
 

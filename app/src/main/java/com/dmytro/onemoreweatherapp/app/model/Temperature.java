@@ -1,11 +1,13 @@
 package com.dmytro.onemoreweatherapp.app.model;
 
+import java.io.Serializable;
+
 /**
  * User: Dmytro Vynokurov
  * Date: 15.06.14
  * Time: 4:08
  */
-public class Temperature {
+public class Temperature implements Serializable {
     public enum Scale{CELSIUS, FAHRENHEIT}
     private static final long serialVersionUID = 12341L;
 

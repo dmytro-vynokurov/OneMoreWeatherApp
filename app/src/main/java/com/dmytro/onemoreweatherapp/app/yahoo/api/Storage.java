@@ -1,9 +1,10 @@
 package com.dmytro.onemoreweatherapp.app.yahoo.api;
 
+import android.content.Context;
 import com.dmytro.onemoreweatherapp.app.model.City;
 import com.dmytro.onemoreweatherapp.app.model.Forecast;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -13,6 +14,7 @@ import java.util.*;
  */
 public class Storage implements Serializable{
     private static final long serialVersionUID = 123451;
+    private static String STORAGE_FILENAME = "storage";
 
     private static Storage instance = null;
 
@@ -22,9 +24,12 @@ public class Storage implements Serializable{
     }
 
     private Map<City,Forecast> forecasts;
+    private boolean fetchSuccessful = true;
+    private Calendar timestamp;
 
     private Storage() {
-        forecasts = new HashMap<City, Forecast>();
+        Comparator<City> comparator = new CityViewComparator();
+        forecasts = new TreeMap<City, Forecast>(comparator);
     }
 
     public Map<City,Forecast> getForecasts() {
@@ -41,5 +46,73 @@ public class Storage implements Serializable{
 
     public Set<City> getCities(){
         return forecasts.keySet();
+    }
+
+    public List<City> getCitiesList(){
+        return new ArrayList<City>(getCities());
+    }
+
+    public int numberOfCities(){
+        return forecasts.size();
+    }
+
+    public boolean isFetchSuccessful() {
+        return fetchSuccessful;
+    }
+
+    public void setFetchSuccessful(boolean fetchSuccessful) {
+        this.fetchSuccessful = fetchSuccessful;
+    }
+
+    public Calendar getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Calendar timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isDataObsolete(){
+        int day = 1000*60*60*24;
+        Calendar now = Calendar.getInstance();
+        long nowMs = now.getTimeInMillis();
+        long timestampMs = timestamp.getTimeInMillis();
+        return nowMs-timestampMs>day;
+
+    }
+
+    public void persist(Context context){
+        try {
+            FileOutputStream fos = context.openFileOutput(STORAGE_FILENAME, Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this);
+            oos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void load(Context context){
+        try {
+            FileInputStream fis = context.openFileInput(STORAGE_FILENAME);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            Object readObject = is.readObject();
+            is.close();
+
+            if(readObject != null && readObject instanceof Storage) {
+                instance = (Storage) readObject;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static class CityViewComparator implements Serializable, Comparator<City> {
+        @Override
+        public int compare(City lhs, City rhs) {
+            return lhs.getViewIndex()-rhs.getViewIndex();
+        }
     }
 }

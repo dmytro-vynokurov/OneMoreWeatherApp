@@ -14,9 +14,14 @@ public class City implements Serializable{
     private long id;
     private int viewIndex;
 
-    public City(String name, long id) {
+    public City(long id,String name) {
         this.name = name;
         this.id = id;
+    }
+
+    public City(long id, String name, int viewIndex){
+        this(id,name);
+        this.viewIndex = viewIndex;
     }
 
     public String getName() {

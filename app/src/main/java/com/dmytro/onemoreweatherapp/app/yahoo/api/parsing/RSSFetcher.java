@@ -1,5 +1,6 @@
 package com.dmytro.onemoreweatherapp.app.yahoo.api.parsing;
 
+import com.dmytro.onemoreweatherapp.app.yahoo.api.Storage;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -40,8 +41,10 @@ public class RSSFetcher {
                     xmlParser.setInput(stream, null);
                     rssParser.parseAndStrore(xmlParser);
                     stream.close();
+                    Storage.getInstance().setFetchSuccessful(true);
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Data fetching failed");
+                    Storage.getInstance().setFetchSuccessful(false);
                 }
             }
         });

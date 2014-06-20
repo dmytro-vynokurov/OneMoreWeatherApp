@@ -1,5 +1,6 @@
 package com.dmytro.onemoreweatherapp.app;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
 import android.widget.TextView;
+import com.dmytro.onemoreweatherapp.app.model.City;
 import com.dmytro.onemoreweatherapp.app.model.Forecast;
 import com.dmytro.onemoreweatherapp.app.yahoo.api.Storage;
 import com.dmytro.onemoreweatherapp.app.yahoo.api.YahooApi;
@@ -17,7 +19,7 @@ import com.google.android.gms.ads.AdView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -42,8 +44,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
@@ -51,6 +51,15 @@ public class MainActivity extends ActionBarActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        Storage storage = Storage.getInstance();
+        Map<City,Forecast> forecasts = storage.getForecasts();
+        forecasts.put(new City(924938,"Kyiv",0),null);
+        forecasts.put(new City(502075,"Krakow",1),null);
+        forecasts.put(new City(2502265,"Sunnyvale",2), null);
+
+        YahooApi.updateAllForecasts(this);
+
     }
 
     @Override
@@ -83,29 +92,23 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position,MainActivity.this);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+//            notifyDataSetChanged();
+//            return Storage.getInstance().numberOfCities();
             return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+            try{
+                return Storage.getInstance().getCitiesList().get(position).getName();
+            }catch(NullPointerException npe){
+                return null;
             }
-            return null;
         }
     }
 
@@ -113,25 +116,20 @@ public class MainActivity extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+        private int currentFragmentId;
+        private Activity activity;
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
+        public static PlaceholderFragment newInstance(int sectionNumber, Activity activity) {
+            return new PlaceholderFragment(sectionNumber,activity);
         }
 
-        public PlaceholderFragment() {
+        public PlaceholderFragment(int currentFragmentId,Activity activity) {
+            this.currentFragmentId = currentFragmentId;
+            this.activity=activity;
         }
 
         @Override
@@ -146,38 +144,37 @@ public class MainActivity extends ActionBarActivity {
                     .addTestDevice("7BD0CC159298FEEE10BBDCF2A26E9B7D").build();
             adView.loadAd(adRequest);
 
-            YahooApi.updateAllForecasts();
-
+            YahooApi.updateAllForecasts(activity);
             updateForecastOnView(rootView);
 
             return rootView;
         }
-    }
 
-    private static void updateForecastOnView(View rootView) {
-        List<Forecast> forecasts = Storage.getInstance().getForecastValues();
-        if(!forecasts.isEmpty()){
-            Forecast forecast = forecasts.get(0);
+        private void updateForecastOnView(View rootView) {
+            List<Forecast> forecasts = Storage.getInstance().getForecastValues();
+            if(!forecasts.isEmpty() && forecasts.get(currentFragmentId)!=null){
+                Forecast forecast = forecasts.get(currentFragmentId);
 
 
-            TextView city = (TextView)rootView.findViewById(R.id.city);
-            TextView date = (TextView)rootView.findViewById(R.id.date);
-            TextView dayOfWeek = (TextView)rootView.findViewById(R.id.dayOfWeek);
-            TextView temp = (TextView)rootView.findViewById(R.id.currentTemp);
-            TextView humidity = (TextView)rootView.findViewById(R.id.currentHumidity);
-            TextView pressure = (TextView)rootView.findViewById(R.id.currentPressure);
-            TextView wind = (TextView)rootView.findViewById(R.id.currentWind);
-            TextView description = (TextView)rootView.findViewById(R.id.currentDescription);
+                TextView city = (TextView)rootView.findViewById(R.id.city);
+                TextView date = (TextView)rootView.findViewById(R.id.date);
+                TextView dayOfWeek = (TextView)rootView.findViewById(R.id.dayOfWeek);
+                TextView temp = (TextView)rootView.findViewById(R.id.currentTemp);
+                TextView humidity = (TextView)rootView.findViewById(R.id.currentHumidity);
+                TextView pressure = (TextView)rootView.findViewById(R.id.currentPressure);
+                TextView wind = (TextView)rootView.findViewById(R.id.currentWind);
+                TextView description = (TextView)rootView.findViewById(R.id.currentDescription);
 
-            city.setText(forecast.getCity().toString());
-            date.setText(new SimpleDateFormat("MMM").format(forecast.getDate().getTime())+
-                    forecast.getDate().get(Calendar.DAY_OF_MONTH));
-            dayOfWeek.setText(new SimpleDateFormat("EEEE").format(forecast.getDate().getTime()));
-            temp.setText(forecast.getCurrentTemperature().toString());
-            humidity.setText("humidity: "+String.valueOf(forecast.getHumidity())+"%");
-            pressure.setText("pressure: "+String.valueOf(forecast.getPressure())+"mm hg");
-            wind.setText("wind: "+forecast.getWind().toString());
-            description.setText(forecast.getCurrentDescription());
+                city.setText(forecast.getCity().toString());
+                date.setText(new SimpleDateFormat("MMMM").format(forecast.getDate().getTime())+" "+
+                        forecast.getDate().get(Calendar.DAY_OF_MONTH));
+                dayOfWeek.setText(new SimpleDateFormat("EEEE").format(forecast.getDate().getTime()));
+                temp.setText(forecast.getCurrentTemperature().toString());
+                humidity.setText("humidity: "+String.valueOf(forecast.getHumidity())+"%");
+                pressure.setText("pressure: "+String.valueOf(forecast.getPressure())+"mm hg");
+                wind.setText(forecast.getWind().toString());
+                description.setText(forecast.getCurrentDescription());
+            }
         }
     }
 
